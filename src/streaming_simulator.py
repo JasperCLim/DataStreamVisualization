@@ -7,8 +7,11 @@ import psycopg
 
 
 class StreamingSimulator:
-    def __init__(self, csv_path="data/RMBR4-2_export_test.csv", database_url=None):
-        self.data = pd.read_csv(csv_path)
+    def __init__(self, data, database_url=None):
+        if not isinstance(data, pd.DataFrame):
+            raise TypeError("data must be a pandas DataFrame")
+
+        self.data = data.copy()
         self.database_url = database_url or os.environ["DATABASE_URL"]
         self.position = 0
 
